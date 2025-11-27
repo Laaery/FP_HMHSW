@@ -1,0 +1,33 @@
+Classification Report
+============================================================
+                                                                precision    recall  f1-score   support
+
+          Arts and crafts and etiquette supplies manufacturing       1.00      1.00      1.00        38
+                    Basic chemical raw materials manufacturing       0.99      1.00      1.00     10860
+                                         Battery manufacturing       1.00      0.96      0.98       153
+Coatings, printing ink, paint and similar products manufacture       0.98      0.87      0.92       126
+                   Commonly used non-ferrous metal acquisition       1.00      1.00      1.00       105
+                      Commonly used non-ferrous metal smelting       1.00      1.00      1.00     16898
+        Electronic components and electronic special materials       0.94      0.74      0.83        23
+                             Environmental governance industry       1.00      1.00      1.00       742
+          Explosives, fire and fireworks product manufacturing       1.00      0.67      0.80         3
+                                           Ferroalloy smelting       0.98      1.00      0.99        43
+                           Fur tanning and products processing       1.00      0.50      0.67        10
+                                                  Gas drilling       1.00      0.95      0.97        19
+                                           Glass manufacturing       0.98      0.94      0.96        54
+                              Lighting appliance manufacturing       0.62      1.00      0.77         5
+         Metal surface treatment and heat treatment processing       0.99      0.99      0.99      4560
+                                       Noble metal acquisition       1.00      1.00      1.00        31
+                                          Noble metal smelting       1.00      1.00      1.00         9
+                           Rare and rare earth metals smelting       1.00      1.00      1.00        65
+                      Refined petroleum products manufacturing       1.00      1.00      1.00       267
+                                                   Steelmaking       1.00      1.00      1.00        16
+                             Synthetic materials manufacturing       0.75      0.56      0.64        16
+                           Universal instruments manufacturing       1.00      0.33      0.50         3
+                                                   Unspecified       1.00      0.99      0.99      1250
+                                 Veterinary drug manufacturing       1.00      0.96      0.98        56
+                                               Wood processing       0.98      0.96      0.97        47
+
+                                                      accuracy                           1.00     35399
+                                                     macro avg       0.97      0.90      0.92     35399
+                                                  weighted avg       1.00      1.00      1.00     35399

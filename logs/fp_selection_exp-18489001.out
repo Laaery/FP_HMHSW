@@ -1,0 +1,65 @@
+Job started at 2025年 09月 09日 星期二 23:04:20 CST
+Running on node: node0319
+Job ID: 18489001
+Starting Threshold Sweep for Each Scenario
+================================================================================
+Loaded full data: (181751, 349)
+
+==================================================
+Processing Scenario: original_fn_1_2
+==================================================
+Built subset: 5937 samples
+Loaded 345 features from ../output/fn_fp_mingle_fn_fp_bacc_balanced_250909/robust_feature_set_wss.csv
+📁 Output path: ../output/best_threshold_calculation_250909/original_fn_1_2
+Completed: original_fn_1_2
+
+==================================================
+Processing Scenario: original_fp_1_2
+==================================================
+Built subset: 1101 samples
+Loaded 345 features from ../output/fn_fp_mingle_fn_fp_bacc_balanced_250909/robust_feature_set_wss.csv
+📁 Output path: ../output/best_threshold_calculation_250909/original_fp_1_2
+Completed: original_fp_1_2
+
+==================================================
+Processing Scenario: original_fn1_fp1
+==================================================
+Built subset: 1707 samples
+Loaded 345 features from ../output/fn_fp_mingle_fn_fp_bacc_balanced_250909/robust_feature_set_wss.csv
+📁 Output path: ../output/best_threshold_calculation_250909/original_fn1_fp1
+Completed: original_fn1_fp1
+
+==================================================
+Processing Scenario: original_fn12_fp12
+==================================================
+Built subset: 6879 samples
+Loaded 345 features from ../output/fn_fp_mingle_fn_fp_bacc_balanced_250909/robust_feature_set_wss.csv
+📁 Output path: ../output/best_threshold_calculation_250909/original_fn12_fp12
+Completed: original_fn12_fp12
+
+==================================================
+Processing Scenario: original_mingle
+==================================================
+Built subset: 1707 samples
+Loaded 345 features from ../output/fn_fp_mingle_fn_fp_bacc_balanced_250909/robust_feature_set_wss.csv
+📁 Output path: ../output/best_threshold_calculation_250909/original_mingle
+Completed: original_mingle
+
+==================================================
+Processing Scenario: mingle_perturb_1
+==================================================
+Built subset: 24349 samples
+Loaded 345 features from ../output/fn_fp_mingle_fn_fp_bacc_balanced_250909/robust_feature_set_wss.csv
+📁 Output path: ../output/best_threshold_calculation_250909/mingle_perturb_1
+Completed: mingle_perturb_1
+
+==================================================
+Processing Scenario: mingle_perturb_1_2
+==================================================
+Built subset: 175031 samples
+Loaded 345 features from ../output/fn_fp_mingle_fn_fp_bacc_balanced_250909/robust_feature_set_wss.csv
+📁 Output path: ../output/best_threshold_calculation_250909/mingle_perturb_1_2
+Completed: mingle_perturb_1_2
+
+All scenarios completed! Results saved to: ../output/best_threshold_calculation_250909
+Job finished at 2025年 09月 10日 星期三 00:13:26 CST

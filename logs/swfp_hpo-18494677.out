@@ -1,0 +1,133 @@
+Job started at 2025年 09月 11日 星期四 23:05:34 CST
+Running on node: node0255
+Job ID: 18494677
+Loading data from ../data/phase_vector_fn_fp_mingle_fn_fp_1_2.csv ...
+labels: {'Arts and crafts and etiquette supplies manufacturing': np.int64(0), 'Basic chemical raw materials manufacturing': np.int64(1), 'Battery manufacturing': np.int64(2), 'Coatings, printing ink, paint and similar products manufacture': np.int64(3), 'Commonly used non-ferrous metal acquisition': np.int64(4), 'Commonly used non-ferrous metal smelting': np.int64(5), 'Electronic components and electronic special materials': np.int64(6), 'Environmental governance industry': np.int64(7), 'Explosives, fire and fireworks product manufacturing': np.int64(8), 'Ferroalloy smelting': np.int64(9), 'Fur tanning and products processing': np.int64(10), 'Gas drilling': np.int64(11), 'Glass manufacturing': np.int64(12), 'Lighting appliance manufacturing': np.int64(13), 'Metal surface treatment and heat treatment processing': np.int64(14), 'Noble metal acquisition': np.int64(15), 'Noble metal smelting': np.int64(16), 'Rare and rare earth metals smelting': np.int64(17), 'Refined petroleum products manufacturing': np.int64(18), 'Steelmaking': np.int64(19), 'Synthetic materials manufacturing': np.int64(20), 'Universal instruments manufacturing': np.int64(21), 'Unspecified': np.int64(22), 'Veterinary drug manufacturing': np.int64(23), 'Wood processing': np.int64(24)}
+Features: 345
+Total samples: 181751, Unique Index: 158
+Starting high-performance joint training with auto-scenario & parallel execution...
+Using 148 robust features.
+Pre-generating data splits for all random seeds...
+Starting parallel execution on 8 cores...
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_7.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_7.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_7.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_5.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_5.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_5.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_1.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_1.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_1.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_8.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_8.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_8.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_3.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_3.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_3.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_0.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_0.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_0.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_8.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_8.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_8.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_5.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_5.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_5.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_9.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_9.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_9.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_3.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_3.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_3.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_1.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_1.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_1.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_7.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_7.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_7.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_3.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_3.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_3.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_1.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_1.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_1.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_7.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_7.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_7.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_2.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_2.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_2.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_4.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_4.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_4.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_9.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_9.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_9.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_5.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_5.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_5.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_9.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_9.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_9.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_5.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_5.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_5.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_4.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_4.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_4.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_0.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_0.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_0.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_8.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_8.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_8.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_4.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_4.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_4.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_0.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_0.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_0.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_6.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_6.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_6.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_6.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_6.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_6.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_2.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_2.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_2.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_6.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_6.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_6.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_2.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_2.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_2.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_7.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_7.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_7.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_4.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_4.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_4.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_8.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_8.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_8.pkl
+All done. Results saved to ../output/hpo_exp_4
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_LogisticRegression_seed_1.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/LogisticRegression_seed_1.csv
+Model saved: ../output/hpo_exp_4/models/model_LogisticRegression_seed_1.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_AnnoyKNN_seed_3.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/AnnoyKNN_seed_3.csv
+Model saved: ../output/hpo_exp_4/models/model_AnnoyKNN_seed_3.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_0.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_0.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_0.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_RandomForest_seed_6.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/RandomForest_seed_6.csv
+Model saved: ../output/hpo_exp_4/models/model_RandomForest_seed_6.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_2.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_2.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_2.pkl
+HPO log saved: ../output/hpo_exp_4/hpo_logs/hpo_XGBoost_seed_9.csv
+Detailed result saved: ../output/hpo_exp_4/per_experiment/XGBoost_seed_9.csv
+Model saved: ../output/hpo_exp_4/models/model_XGBoost_seed_9.pkl
+Job finished at 2025年 09月 13日 星期六 01:52:17 CST

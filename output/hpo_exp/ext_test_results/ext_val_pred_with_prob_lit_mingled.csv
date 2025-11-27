@@ -1,0 +1,35 @@
+True_Label,Top1_Pred,Top1_Prob,Top2_Pred,Top2_Prob,Top3_Pred,Top3_Prob,In_Top1,In_Top3
+Basic chemical raw materials manufacturing,Commonly used non-ferrous metal smelting,0.8601,Basic chemical raw materials manufacturing,0.1395,Steelmaking,0.0001,False,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9722,Unspecified,0.0253,Basic chemical raw materials manufacturing,0.0025,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9991,Unspecified,0.0008,Basic chemical raw materials manufacturing,0.0001,True,True
+Basic chemical raw materials manufacturing,Basic chemical raw materials manufacturing,0.8865,Commonly used non-ferrous metal smelting,0.0457,Noble metal smelting,0.0195,True,True
+Unspecified,Unspecified,0.9997,Metal surface treatment and heat treatment processing,0.0001,Commonly used non-ferrous metal smelting,0.0001,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,1.0000,Veterinary drug manufacturing,0.0000,Synthetic materials manufacturing,0.0000,True,True
+Steelmaking,Steelmaking,0.9349,Commonly used non-ferrous metal smelting,0.0393,Basic chemical raw materials manufacturing,0.0208,True,True
+Environmental governance industry,Environmental governance industry,0.9198,Metal surface treatment and heat treatment processing,0.0735,Basic chemical raw materials manufacturing,0.0056,True,True
+Electronic components and electronic special materials,Commonly used non-ferrous metal smelting,0.9990,Basic chemical raw materials manufacturing,0.0006,Commonly used non-ferrous metal acquisition,0.0001,False,False
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9993,Unspecified,0.0007,Basic chemical raw materials manufacturing,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.8652,Veterinary drug manufacturing,0.1241,Ferroalloy smelting,0.0027,True,True
+Basic chemical raw materials manufacturing,Basic chemical raw materials manufacturing,0.5292,Environmental governance industry,0.2358,Veterinary drug manufacturing,0.1237,True,True
+Metal surface treatment and heat treatment processing,Metal surface treatment and heat treatment processing,0.9996,Battery manufacturing,0.0002,Fur tanning and products processing,0.0001,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.8117,Unspecified,0.1855,Steelmaking,0.0011,True,True
+Metal surface treatment and heat treatment processing,Metal surface treatment and heat treatment processing,0.6727,Basic chemical raw materials manufacturing,0.2565,Electronic components and electronic special materials,0.0422,True,True
+Basic chemical raw materials manufacturing,Commonly used non-ferrous metal smelting,0.8652,Basic chemical raw materials manufacturing,0.1292,Steelmaking,0.0054,False,True
+Basic chemical raw materials manufacturing,Basic chemical raw materials manufacturing,0.9952,Environmental governance industry,0.0026,Steelmaking,0.0019,True,True
+Basic chemical raw materials manufacturing,Steelmaking,0.5258,Environmental governance industry,0.3010,Basic chemical raw materials manufacturing,0.1000,False,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9967,Unspecified,0.0033,Basic chemical raw materials manufacturing,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,1.0000,Unspecified,0.0000,Commonly used non-ferrous metal acquisition,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9999,Unspecified,0.0001,Basic chemical raw materials manufacturing,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9999,Unspecified,0.0001,Commonly used non-ferrous metal acquisition,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9998,Unspecified,0.0002,Basic chemical raw materials manufacturing,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,1.0000,Unspecified,0.0000,Noble metal acquisition,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,1.0000,Unspecified,0.0000,Basic chemical raw materials manufacturing,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,1.0000,Unspecified,0.0000,Noble metal acquisition,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9999,Unspecified,0.0001,Basic chemical raw materials manufacturing,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,1.0000,Unspecified,0.0000,Ferroalloy smelting,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,1.0000,Synthetic materials manufacturing,0.0000,Ferroalloy smelting,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,1.0000,Unspecified,0.0000,Ferroalloy smelting,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,1.0000,Unspecified,0.0000,Ferroalloy smelting,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9999,Unspecified,0.0001,Steelmaking,0.0000,True,True
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9946,Unspecified,0.0038,Commonly used non-ferrous metal acquisition,0.0006,True,True
+Metal surface treatment and heat treatment processing,Metal surface treatment and heat treatment processing,0.9996,Battery manufacturing,0.0002,Fur tanning and products processing,0.0001,True,True

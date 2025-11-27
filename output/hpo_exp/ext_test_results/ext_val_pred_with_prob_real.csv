@@ -1,0 +1,6 @@
+True_Label,Top1_Pred,Top1_Prob,Top2_Pred,Top2_Prob,Top3_Pred,Top3_Prob,In_Top1,In_Top3
+Metal surface treatment and heat treatment processing,Basic chemical raw materials manufacturing,0.7831,Metal surface treatment and heat treatment processing,0.2008,Universal instruments manufacturing,0.0067,FALSE,TRUE
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9394,Wood processing,0.0474,Basic chemical raw materials manufacturing,0.0065,TRUE,TRUE
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9062,Unspecified,0.0787,Basic chemical raw materials manufacturing,0.014,TRUE,TRUE
+Commonly used non-ferrous metal smelting,Commonly used non-ferrous metal smelting,0.9752,Basic chemical raw materials manufacturing,0.0136,Steelmaking,0.0044,TRUE,TRUE
+Environmental governance industry,Environmental governance industry,0.4829,Metal surface treatment and heat treatment processing,0.4759,Basic chemical raw materials manufacturing,0.04,TRUE,TRUE
