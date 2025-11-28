@@ -1,3 +1,4 @@
+from pathlib import Path
 import streamlit as st
 import numpy as np
 import pandas as pd
@@ -8,16 +9,18 @@ import time
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import cosine_distances
 
+APP_DIR = Path(__file__).parent.resolve()
 st.set_page_config(
     page_title="Heavy-Metal Hazardous Waste Source Predictor",
     page_icon="🧮",
-    layout="centered"
+    layout="wide"
 )
 
 
 @st.cache_resource
 def load_models_and_data():
-    model_files = [f for f in os.listdir() if f.startswith('model_') and f.endswith('.pkl')]
+    model_paths = list(APP_DIR.glob("model_*.pkl"))
+    model_files = [f.name for f in model_paths]
 
     if not model_files:
         st.error("❌ No model files found! Please include files like 'model_RandomForest.pkl'")
@@ -27,12 +30,13 @@ def load_models_and_data():
     status_text = st.empty()
 
     models = {}
-    for i, file in enumerate(model_files):
-        name = file.replace('model_', '').replace('.pkl', '')
+    for i, (file_path, file_name) in enumerate(zip(model_paths, model_files)):
+        name = file_name.replace('model_', '').replace('.pkl', '')
         try:
-            model = load(file)
-            status_text.text(f"Loading {file}...")
+            model = load(file_path)
+            status_text.text(f"Loading {file_name}...")
             time.sleep(0.1)
+
             if "xgb" in name.lower() or "xgboost" in name.lower():
                 if hasattr(model, 'get_booster'):
                     booster = model.get_booster()
@@ -50,7 +54,7 @@ def load_models_and_data():
                         pass
             models[name] = model
         except Exception as e:
-            st.warning(f"⚠️ Failed to load {file}: {e}")
+            st.warning(f"⚠️ Failed to load {file_name}: {e}")
         progress_bar.progress((i + 1) / len(model_files))
 
     time.sleep(0.3)
@@ -58,13 +62,13 @@ def load_models_and_data():
     status_text.text(f"✅ Loaded {len(models)} model(s).")
 
     try:
-        label_encoder = load('label_encoder.pkl')
+        label_encoder = load(APP_DIR / 'label_encoder.pkl')
     except Exception as e:
         st.error(f"❌ Failed to load label_encoder.pkl: {e}")
         label_encoder = None
 
     try:
-        feature_names = load('feature_names.pkl')
+        feature_names = load(APP_DIR / 'feature_names.pkl')
         if isinstance(feature_names, np.ndarray):
             feature_names = feature_names.tolist()
         elif not isinstance(feature_names, (list, tuple)):
@@ -74,9 +78,10 @@ def load_models_and_data():
         feature_names = []
 
     phase_vector_df = None
+    csv_path = APP_DIR / 'phase_vector_for_app.csv'
     try:
-        if os.path.exists('phase_vector_for_app.csv'):
-            phase_vector_df = pd.read_csv('phase_vector_for_app.csv')
+        if csv_path.exists():
+            phase_vector_df = pd.read_csv(csv_path)
             required_cols = ['Source', 'Index']
             missing_cols = [col for col in required_cols if col not in phase_vector_df.columns]
             if missing_cols:
@@ -238,240 +243,214 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
 if 'selected_phases' not in st.session_state:
     st.session_state.selected_phases = []
 
-st.title("📊 Heavy-Metal Hazardous Waste Source Predictor")
-st.markdown("""
-Predict the **source** of heavy metal hazardous waste based on its **mineral phase fingerprint**.
-Enter mineral phases below — suggestions will appear as you type.
-""")
+# ======================
+# SIDEBAR: Settings Panel
+# ======================
+with st.sidebar:
+    st.markdown("### ⚙️ Model Settings")
 
-models, label_encoder, feature_names_reduced, phase_vector_df = load_models_and_data()
+    models, label_encoder, feature_names_reduced, phase_vector_df = load_models_and_data()
 
-if not models:
-    st.stop()
-if not label_encoder:
-    st.error("Label encoder is required. App cannot run.")
-    st.stop()
-if not feature_names_reduced:
-    st.error("Feature names (phases) are missing. App cannot run.")
-    st.stop()
+    if not models or not label_encoder or not feature_names_reduced:
+        st.error("Required files missing. App cannot run.")
+        st.stop()
 
+    model_names = list(models.keys())
+    default_index = model_names.index('LogisticRegression') if 'LogisticRegression' in model_names else 0
+    model_name = st.selectbox("Model", model_names, index=default_index)
+    model = models[model_name]
 
-similarity_matching_available = phase_vector_df is not None
-
-if similarity_matching_available:
-    full_feature_names = [col for col in phase_vector_df.columns if col not in ['Source', 'Index', 'Description']]
-    missing_in_full = set(feature_names_reduced) - set(full_feature_names)
-    if missing_in_full:
-        st.warning(f"Some reduced features not found in full dataset: {missing_in_full}")
-else:
-    full_feature_names = feature_names_reduced
-
-
-st.subheader("🔍 Enter Mineral Phases Fingerprint")
-
-phase_input = st.selectbox(
-    "Start typing to search for phases...",
-    options=full_feature_names,
-    index=None,
-    placeholder="Type or select a mineral phase...",
-    key="phase_input_unique"
-)
-
-if st.button("➕ Add Phase"):
-    phase_value = st.session_state.phase_input_unique
-    if phase_value:
-        if phase_value not in st.session_state.selected_phases:
-            st.session_state.selected_phases.append(phase_value)
-            st.success(f"Added: **{phase_value}**")
-            del st.session_state.phase_input_unique
-            st.rerun()
-        else:
-            st.warning(f"⚠️ '{phase_value}' is already in the list.")
+    similarity_matching_available = phase_vector_df is not None
+    k_matches = 3
+    if similarity_matching_available:
+        k_matches = st.slider("Top K matches", 1, 5, 3, help="Matches per source")
+        st.info("Similarity matching: ✅ Enabled")
     else:
-        st.warning("Please select a phase first.")
+        st.warning("Similarity matching: ❌ Disabled")
 
+    # Reuse logic to get full_feature_names
+    if similarity_matching_available:
+        full_feature_names = [col for col in phase_vector_df.columns if col not in ['Source', 'Index', 'Description']]
+    else:
+        full_feature_names = feature_names_reduced
 
-if st.session_state.selected_phases:
-    st.write("**Selected Phases:**")
-    cols = st.columns(min(len(st.session_state.selected_phases), 5))
-    for idx, phase in enumerate(st.session_state.selected_phases):
-        col_idx = idx % 5
-        with cols[col_idx]:
-            if st.button(f"❌ {phase}", key=f"remove_{idx}"):
-                st.session_state.selected_phases.remove(phase)
-                st.rerun()
-else:
-    st.info("No phases added yet. Please add at least one.")
-
-
-st.markdown("---")
-if st.button("🗑️ Clear All Phases"):
-    st.session_state.selected_phases = []
-    st.rerun()
-
-st.subheader("🧠 Select Model")
-
-model_names = list(models.keys())
-default_index = 0
-if 'LogisticRegression' in model_names:
-    default_index = model_names.index('LogisticRegression')
-elif 'logistic' in model_names:
-    default_index = model_names.index('logistic')
-
-model_name = st.selectbox(
-    "Choose a trained model:",
-    options=model_names,
-    index=default_index
+# ======================
+# MAIN: Header
+# ======================
+st.title("🔍 Trace Heavy-Metal Waste to Its Source")
+st.markdown(
+    "<p style='text-align: center; color: #666; margin-bottom: 2rem;'>"
+    "Enter mineral phases to identify the source of heavy-metal hazardous solid waste"
+    "</p>",
+    unsafe_allow_html=True
 )
-model = models[model_name]
 
 
-if similarity_matching_available:
-    st.markdown("---")
-    st.subheader("🔍 Similarity Matching Settings")
+# ======================
+# SEARCH-LIKE INPUT WITH EMBEDDED ADD BUTTON
+# ======================
+st.markdown("#### Enter mineral phases from your sample")
 
-    k_matches = st.slider(
-        "Number of top similar Index matches to show per Source:",
-        min_value=1,
-        max_value=10,
-        value=3,
-        help="How many similar Index matches to display for each of the top 3 predicted Sources"
+input_col, add_col, clear_col, predict_col = st.columns([5, 1, 1, 1])
+
+with input_col:
+    phase_input = st.selectbox(
+        "Mineral phase",
+        options=full_feature_names,
+        index=None,
+        placeholder="🔍 Type to search phases...",
+        key="phase_input_unique",
+        label_visibility="collapsed"
     )
 
+# Add button: only show if something is selected
+with add_col:
+    if phase_input:
+        if st.button("➕", key="add_phase_btn", help="Add this phase", use_container_width=True):
+            if phase_input not in st.session_state.selected_phases:
+                st.session_state.selected_phases.append(phase_input)
+                del st.session_state.phase_input_unique  # Clear selection
+                st.rerun()
+            else:
+                st.toast(f"⚠️ '{phase_input}' already added", icon="ℹ️")
+    else:
+        # Show empty space to keep layout stable
+        st.empty()
 
-if st.button("🚀 Predict Source", type="primary"):
-    if len(st.session_state.selected_phases) == 0:
+# Clear button
+with clear_col:
+    if st.button("🗑️", key="clear_all_btn", help="Clear all phases", use_container_width=True):
+        st.session_state.selected_phases = []
+        st.rerun()
+
+with predict_col:
+    if st.button("🔎 Predict", key="predict_btn", help="Predict source", use_container_width=True):
+        predict_btn = True
+    else:
+        predict_btn = False
+
+
+# Display selected phases as compact tags
+if st.session_state.selected_phases:
+    st.markdown("<br>", unsafe_allow_html=True)
+    tags = " ".join([f"<span style='background:#e8f5e9; color:#1b5e20; padding:6px 10px; border-radius:6px; margin:4px;'>{p}</span>"
+                     for p in st.session_state.selected_phases])
+    st.markdown(f"<div>{tags}</div>", unsafe_allow_html=True)
+
+
+# ======================
+# PREDICTION LOGIC (triggered by Predict button)
+# ======================
+if predict_btn:
+    if not st.session_state.selected_phases:
         st.warning("Please add at least one mineral phase.")
     else:
-
+        # Build feature vector
         X_reduced = np.zeros((1, len(feature_names_reduced)))
         for phase in st.session_state.selected_phases:
             if phase in feature_names_reduced:
                 idx = feature_names_reduced.index(phase)
                 X_reduced[0, idx] = 1
 
-
         try:
+            # Predict
             pred_class = model.predict(X_reduced)[0]
             pred_proba = model.predict_proba(X_reduced)[0]
             predicted_source = label_encoder.inverse_transform([pred_class])[0]
+            confidence = pred_proba[pred_class]
 
-            st.success(f"**Predicted Source: `{predicted_source}`** (using `{model_name.upper()}`)")
+            # ======================
+            # IMPROVED RESULT DISPLAY
+            # ======================
+            st.markdown("### 🎯 Prediction Result")
 
+            # Highlighted source badge
+            st.markdown(
+                f"""
+                <div style="
+                    background: linear-gradient(135deg, #e0f7e7, #c8e6c9);
+                    padding: 1.2rem;
+                    border-radius: 12px;
+                    text-align: center;
+                    border: 2px solid #4caf50;
+                    margin: 1rem 0;
+                ">
+                    <h3 style="color: #1b5e20; margin:0;">{predicted_source}</h3>
+                    <p style="margin:0.5rem 0; color: #2e7d32;">
+                        <b>Confidence:</b> {confidence:.2%}
+                    </p>
+                    <p style="margin:0; font-size:0.9em; color: #555;">
+                        Model: <code>{model_name}</code>
+                    </p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+            # Prepare probability data
             proba_data = []
             for i, cls in enumerate(label_encoder.classes_):
                 source_name = label_encoder.inverse_transform([i])[0]
                 proba_data.append({"Source": source_name, "Probability": pred_proba[i]})
-
             proba_df = pd.DataFrame(proba_data).sort_values(by="Probability", ascending=False)
 
-            proba_df_display = proba_df.copy()
-            proba_df_display["Probability"] = proba_df_display["Probability"].map("{:.4f}".format)
+            # Two-column layout for plots
+            plot_col, viz_col = st.columns(2)
 
-            st.markdown("### 📊 Prediction Probabilities (Sorted by Confidence)")
-            st.dataframe(proba_df_display, use_container_width=True)
+            with plot_col:
+                with st.container(border=True):
+                    st.markdown("#### 📊 Prediction Probabilities")
+                    fig = px.bar(
+                        proba_df,
+                        x='Source',
+                        y='Probability',
+                        color='Probability',
+                        color_continuous_scale='teal',
+                        text=proba_df['Probability'].round(4)
+                    )
+                    fig.update_traces(textposition='outside')
+                    fig.update_layout(
+                        height=400,
+                        margin=dict(t=40, b=120, l=40, r=20),
+                        xaxis_tickangle=-45
+                    )
+                    st.plotly_chart(fig, use_container_width=True)
 
-            fig = px.bar(
-                proba_df_display,
-                x='Source',
-                y='Probability',
-                title="Prediction Probabilities",
-                labels={'Probability': 'Probability', 'Source': 'Source'},
-                color='Probability',
-                color_continuous_scale='Sunset',
-                text='Probability'
-            )
+            with viz_col:
+                with st.container(border=True):
+                    if similarity_matching_available:
+                        st.markdown("#### 🌐 Similar Samples (MDS)")
+                        query_vector_full = [1 if f in st.session_state.selected_phases else 0 for f in
+                                             full_feature_names]
+                        top3_indices = np.argsort(pred_proba)[::-1][:3]
+                        top3_sources = [label_encoder.inverse_transform([i])[0] for i in top3_indices]
+                        available_sources = [s for s in top3_sources if s in phase_vector_df['Source'].unique()]
 
-            fig.update_traces(texttemplate='%{text:.4f}', textposition='outside')
-            fig.update_layout(
-                uniformtext_minsize=8,
-                uniformtext_mode='hide',
-                xaxis_tickangle=-45,
-                height=500,
-                margin=dict(l=20, r=20, t=60, b=100)
-            )
-            st.plotly_chart(fig, use_container_width=True)
-
-            if similarity_matching_available:
-                st.markdown("---")
-                st.subheader("🔍 Similar Index Matches")
-
-                try:
-                    query_vector_full = []
-                    for feature in full_feature_names:
-                        if feature in st.session_state.selected_phases:
-                            query_vector_full.append(1)
-                        else:
-                            query_vector_full.append(0)
-
-
-                    top3_indices = np.argsort(pred_proba)[::-1][:3]
-                    top3_sources = [label_encoder.inverse_transform([i])[0] for i in top3_indices]
-
-                    available_sources = []
-                    for source in top3_sources:
-                        if source in phase_vector_df['Source'].unique():
-                            available_sources.append(source)
-                        else:
-                            st.info(
-                                f"Source '{source}' not found in phase_vector_for_app.csv, skipping similarity matching for this source.")
-
-                    if not available_sources:
-                        st.warning(
-                            "None of the top 3 predicted sources are available in the similarity matching dataset.")
-                    else:
-                        similarity_results = find_top_k_matches_with_description(
-                            phase_vector_df,
-                            query_vector_full,
-                            available_sources,
-                            k=k_matches
-                        )
-
-                        all_matches_for_viz = {}
-
-
-                        total_matches = 0
-                        for source in available_sources:
-                            matches = similarity_results.get(source, [])
-                            all_matches_for_viz[source] = matches
-                            total_matches += len(matches)
-
-                            if matches:
-                                st.markdown(f"### 🔸 Source: **{source}**")
-                                match_data = []
-                                for idx, (index_val, description, similarity) in enumerate(matches):
-                                    match_data.append({
-                                        "Rank": idx + 1,
-                                        "Index": index_val,
-                                        "Description": description,
-                                        "Similarity": f"{similarity:.4f}"
-                                    })
-
-                                match_df = pd.DataFrame(match_data)
-                                st.dataframe(match_df, use_container_width=True, hide_index=True)
-                            else:
-                                st.info(f"No matches found for Source: {source}")
-
-                        if total_matches > 0:
-                            st.markdown("### 📈 Similarity Matching Visualization")
-                            viz_fig = create_similarity_visualization(
-                                phase_vector_df,
-                                query_vector_full,
-                                all_matches_for_viz,
-                                user_vector_name="Your Input"
+                        if available_sources:
+                            similarity_results = find_top_k_matches_with_description(
+                                phase_vector_df, query_vector_full, available_sources, k=k_matches
                             )
-
-                            if viz_fig is not None:
+                            all_matches_for_viz = {s: similarity_results.get(s, []) for s in available_sources}
+                            viz_fig = create_similarity_visualization(
+                                phase_vector_df, query_vector_full, all_matches_for_viz, "Your Sample"
+                            )
+                            if viz_fig:
+                                viz_fig.update_layout(height=400, margin=dict(t=40, b=40, l=20, r=20))
                                 st.plotly_chart(viz_fig, use_container_width=True)
                             else:
-                                st.info("Visualization not available due to technical limitations.")
+                                st.info("MDS visualization unavailable.")
+                        else:
+                            st.info("No reference samples for top sources.")
+                    else:
+                        st.markdown("#### 🌐 Similarity Matching")
+                        st.info("Reference data not available.")
 
-                except Exception as e:
-                    st.error(f"Similarity matching error: {str(e)}")
-                    st.exception(e)
-            else:
-                st.info("Similarity matching data (phase_vector_for_app.csv) not available.")
+            # Optional detailed table
+            with st.expander("📋 Full Prediction Probabilities"):
+                proba_df_display = proba_df.copy()
+                proba_df_display["Probability"] = proba_df_display["Probability"].map("{:.4f}".format)
+                st.dataframe(proba_df_display, use_container_width=True, hide_index=True)
 
         except Exception as e:
-            st.error(f"Prediction error: {str(e)}")
+            st.error(f"Prediction failed: {str(e)}")
             st.exception(e)
