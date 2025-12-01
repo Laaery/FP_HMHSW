@@ -1,9 +1,8 @@
-# Robust Mineral-Phase Fingerprint for Tracing Heavy-Metal Hazardous Solid Wastes to Their Source
+# Source-Identification of Heavy-Metal Hazardous Solid Wastes Using Robust Mineral-Phase Fingerprints
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-blue?logo=python)](https://python.org)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.30%2B-FF4B4B?logo=streamlit)](https://streamlit.io)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
 
 The work presents a novel **mineral-phase fingerprinting approach** to accurately identify the origin of heavy-metal hazardous solid wastes using machine learning.
 
