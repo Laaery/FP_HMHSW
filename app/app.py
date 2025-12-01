@@ -131,6 +131,8 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
     try:
         import plotly.graph_objects as go
         from sklearn.manifold import MDS
+        from sklearn.metrics.pairwise import cosine_distances
+        import numpy as np
 
         feature_cols = [col for col in df.columns if col not in ['Source', 'Index', 'Description']]
 
@@ -140,7 +142,7 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
         colors = []
         sources_list = []
 
-        points_data.append(query_vector)
+        points_data.append(query_array := np.array(query_vector))
         labels.append("Your Sample")
         descriptions.append("Your input mineral phase fingerprint")
         colors.append('red')
@@ -152,9 +154,8 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
         for i, (source, matches) in enumerate(all_matches.items()):
             if source not in source_color_map:
                 source_color_map[source] = color_palette[i % len(color_palette)]
-
             for match in matches:
-                index_val, description, similarity = match
+                index_val, description, _ = match
                 match_row = df[(df['Source'] == source) & (df['Index'] == index_val)]
                 if len(match_row) > 0:
                     match_features = match_row[feature_cols].iloc[0].values
@@ -167,9 +168,8 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
         if len(points_data) <= 1:
             return None
 
-        points_array = np.array(points_data)
-        distance_matrix = cosine_distances(points_array)
-
+        points_array = np.array(points_data)  # shape: (n, d)
+        distance_matrix = cosine_distances(points_array)  # shape: (n, n)
         mds = MDS(
             n_components=2,
             dissimilarity='precomputed',
@@ -177,7 +177,9 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
             max_iter=1500,
             eps=1e-9
         )
-        points_2d = mds.fit_transform(distance_matrix)
+        points_2d = mds.fit_transform(distance_matrix)  # shape: (n, 2)
+
+        distances_to_user = distance_matrix[0, :]
 
         fig = go.Figure()
 
@@ -192,6 +194,14 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
             marker_size = 15 if source == 'User Input' else 10
             marker_line = dict(width=2, color='black') if source == 'User Input' else None
 
+            hover_text = (
+                f"<b>{label}</b><br>"
+                f"Source: {source}<br>"
+                f"Description: {desc}<br>"
+                f"Distance to your sample: {distances_to_user[i]:.3f}<br>"
+                f"X: {x:.2f}<br>Y: {y:.2f}<extra></extra>"
+            )
+
             fig.add_trace(go.Scatter(
                 x=[x],
                 y=[y],
@@ -205,26 +215,34 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
                 text=[label],
                 textposition="top center",
                 name=source,
-                hovertemplate=(
-                    f"<b>{label}</b><br>"
-                    f"Source: {source}<br>"
-                    f"Description: {desc}<br>"
-                    f"X: %{{x:.2f}}<br>Y: %{{y:.2f}}<extra></extra>"
-                ),
+                hovertemplate=hover_text,
                 showlegend=False
             ))
 
-        unique_sources = list(set(sources_list))
+        if len(points_2d) > 1:
+            user_x, user_y = points_2d[0]
+            ref_distances = distances_to_user[1:]
+            top3_indices_in_ref = np.argsort(ref_distances)[:3]
+            top3_global_indices = [i + 1 for i in top3_indices_in_ref]
+
+            for idx in top3_global_indices:
+                fig.add_trace(go.Scatter(
+                    x=[user_x, points_2d[idx, 0]],
+                    y=[user_y, points_2d[idx, 1]],
+                    mode='lines',
+                    line=dict(color='rgba(100,100,100,0.6)', dash='dot', width=1.2),
+                    showlegend=False,
+                    hoverinfo='skip'
+                ))
+
+        unique_sources = list(dict.fromkeys(sources_list))
         for source in unique_sources:
             color = 'red' if source == 'User Input' else source_color_map.get(source, 'gray')
+            symbol = 'star' if source == 'User Input' else 'circle'
             fig.add_trace(go.Scatter(
                 x=[None], y=[None],
                 mode='markers',
-                marker=dict(
-                    size=10,
-                    color=color,
-                    symbol='star' if source == 'User Input' else 'circle'
-                ),
+                marker=dict(size=10, color=color, symbol=symbol),
                 name=source,
                 showlegend=True
             ))
@@ -233,7 +251,7 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
             title="Similarity Matching Visualization (MDS 2D)",
             xaxis_title="MDS Component 1",
             yaxis_title="MDS Component 2",
-            width=600,
+            width=650,
             height=600,
             margin=dict(l=40, r=40, t=60, b=60),
             legend=dict(
