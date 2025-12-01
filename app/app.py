@@ -136,13 +136,15 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
 
         points_data = []
         labels = []
+        descriptions = []
         colors = []
-        sources = []
+        sources_list = []
 
         points_data.append(query_vector)
-        labels.append(user_vector_name)
+        labels.append("Your Sample")
+        descriptions.append("Your input mineral phase fingerprint")
         colors.append('red')
-        sources.append('User Input')
+        sources_list.append('User Input')
 
         color_palette = ['blue', 'green', 'orange', 'purple', 'brown', 'pink', 'gray', 'olive', 'cyan']
         source_color_map = {}
@@ -157,17 +159,16 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
                 if len(match_row) > 0:
                     match_features = match_row[feature_cols].iloc[0].values
                     points_data.append(match_features)
-                    labels.append(f"{index_val}")
+                    labels.append(str(index_val))
+                    descriptions.append(description)
                     colors.append(source_color_map[source])
-                    sources.append(source)
+                    sources_list.append(source)
 
         if len(points_data) <= 1:
             return None
 
         points_array = np.array(points_data)
-
-        distance_matrix = cosine_distances(points_array)  # shape: (n, n)
-
+        distance_matrix = cosine_distances(points_array)
 
         mds = MDS(
             n_components=2,
@@ -180,35 +181,53 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
 
         fig = go.Figure()
 
-        unique_sources = list(set(sources))
-        for source in unique_sources:
-            source_indices = [i for i, s in enumerate(sources) if s == source]
-            source_x = [points_2d[i, 0] for i in source_indices]
-            source_y = [points_2d[i, 1] for i in source_indices]
-            source_labels = [labels[i] for i in source_indices]
+        for i in range(len(points_2d)):
+            x, y = points_2d[i]
+            label = labels[i]
+            desc = descriptions[i]
+            color = colors[i]
+            source = sources_list[i]
 
-            if source == 'User Input':
-                fig.add_trace(go.Scatter(
-                    x=source_x,
-                    y=source_y,
-                    mode='markers+text',
-                    marker=dict(size=15, color='red', symbol='star', line=dict(width=2, color='black')),
-                    text=source_labels,
-                    textposition="top center",
-                    name=source,
-                    hovertemplate='<b>%{text}</b><br>Source: User Input<br>X: %{x:.2f}<br>Y: %{y:.2f}<extra></extra>'
-                ))
-            else:
-                fig.add_trace(go.Scatter(
-                    x=source_x,
-                    y=source_y,
-                    mode='markers+text',
-                    marker=dict(size=10, color=source_color_map[source]),
-                    text=source_labels,
-                    textposition="top center",
-                    name=source,
-                    hovertemplate='<b>%{text}</b><br>Source: ' + source + '<br>X: %{x:.2f}<br>Y: %{y:.2f}<extra></extra>'
-                ))
+            marker_symbol = 'star' if source == 'User Input' else 'circle'
+            marker_size = 15 if source == 'User Input' else 10
+            marker_line = dict(width=2, color='black') if source == 'User Input' else None
+
+            fig.add_trace(go.Scatter(
+                x=[x],
+                y=[y],
+                mode='markers+text',
+                marker=dict(
+                    size=marker_size,
+                    color=color,
+                    symbol=marker_symbol,
+                    line=marker_line
+                ),
+                text=[label],
+                textposition="top center",
+                name=source,
+                hovertemplate=(
+                    f"<b>{label}</b><br>"
+                    f"Source: {source}<br>"
+                    f"Description: {desc}<br>"
+                    f"X: %{{x:.2f}}<br>Y: %{{y:.2f}}<extra></extra>"
+                ),
+                showlegend=False
+            ))
+
+        unique_sources = list(set(sources_list))
+        for source in unique_sources:
+            color = 'red' if source == 'User Input' else source_color_map.get(source, 'gray')
+            fig.add_trace(go.Scatter(
+                x=[None], y=[None],
+                mode='markers',
+                marker=dict(
+                    size=10,
+                    color=color,
+                    symbol='star' if source == 'User Input' else 'circle'
+                ),
+                name=source,
+                showlegend=True
+            ))
 
         fig.update_layout(
             title="Similarity Matching Visualization (MDS 2D)",
@@ -228,11 +247,7 @@ def create_similarity_visualization(df, query_vector, all_matches, user_vector_n
             )
         )
 
-        fig.update_yaxes(
-            scaleanchor="x",
-            scaleratio=1,
-        )
-
+        fig.update_yaxes(scaleanchor="x", scaleratio=1)
         return fig
 
     except Exception as e:
